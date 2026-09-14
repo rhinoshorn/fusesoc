@@ -66,7 +66,7 @@ def abort_handler(signal, frame):
     logger.info("****   FuseSoC aborted  ****")
     logger.info("****************************")
     print("")
-    sys.exit(0)
+    raise KeyboardInterrupt()
 
 
 signal.signal(signal.SIGINT, abort_handler)
@@ -841,7 +841,10 @@ def main():
 
     logger.debug("Command line arguments: " + str(sys.argv))
 
-    fusesoc(args)
+    try:
+        fusesoc(args)
+    except KeyboardInterrupt:
+        exit(0)
 
 
 if __name__ == "__main__":
